@@ -2,18 +2,24 @@ var express = require('express')
 var router = express.Router();
 var Vendor = require('../models/vendors')
 
+// VENDOR SHOW ROUTE
 router.get('/', async (req, res, next) => {
     try {
-        console.log('working')
-    } catch (err) {
-        console.log(err)
+        const allVendors = await Vendor.find()
+        console.log(allVendors)
+        res.json({
+            status: 200,
+            data: allVendors
+        })
+    } catch (err){
         res.send(err)
     }
 })
 
 
-
+// CREATE NEW VENDOR ROUTE
 router.post('/', async (req, res) => {
+    console.log(req.body)
     try {
         const createdVendor = await Vendor.create(req.body);
         console.log('post response')
@@ -26,5 +32,48 @@ router.post('/', async (req, res) => {
         res.send(err)
     }
 })
+
+
+// SHOW VENDOR PAGE
+router.get('/:id', async (req, res, next) => {
+    try {
+        const foundVendor = await Vendor.findById(req.params.id)
+        res.json({
+            status: 200,
+            data: foundVendor
+        })
+    } catch (err){
+        res.send(err)
+    }
+})
+
+// EDIT VENDOR PAGE
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedVendor = await Vendor.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        res.json({
+            status: 200,
+            data: updatedVendor
+        })
+    } catch (err) {
+        res.send(err)
+    }
+})
+
+// DELETE VENDOR PAGE
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedVendor = await Vendor.findByIdAndRemove(req.params.id)
+        res.json({
+            status: 200,
+            data: deletedVendor
+        })
+    } catch(err){
+        res.send(err);
+    }
+})
+
+
+
 
 module.exports = router
