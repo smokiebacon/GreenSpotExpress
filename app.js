@@ -1,27 +1,30 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const bodyParser = require('body-parser');
 const session = require('express-session')
+const passport = require('passport');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler')
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var vendorsRouter = require('./routes/vendors');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const vendorsRouter = require('./routes/vendors');
+require('dotenv').config();
 
+require('./config/passport')
 require('./db/db')
 
 // Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
 
-// Configure isProduction variable
+// Configure isProduction constiable
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Initiate our app
-var app = express();
+const app = express();
 
 
 
@@ -45,6 +48,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+app.use(passport.initialize());
 
 if(!isProduction) {
   app.use(errorHandler())
