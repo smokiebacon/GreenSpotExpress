@@ -5,6 +5,15 @@ const userSchema = mongoose.Schema({
     username: String,
     email: String,
     password: String,
+    googleId: String,
+    vendor: Boolean,
+    vendorName: String,
+    location: String,
+    image: String,
+    schedule: [String],
+    category: String,
+    phone: Number,
+    website: String,
     googleId: String
 })
 

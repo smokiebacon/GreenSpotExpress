@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router();
-var Vendor = require('../models/vendors')
+
 
 // VENDOR SHOW ROUTE [LIST OF ALL VENDORS]
 router.get('/', async (req, res, next) => {
