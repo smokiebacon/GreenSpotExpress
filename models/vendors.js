@@ -10,7 +10,8 @@ const vendorSchema = mongoose.Schema({
     schedule: [String],
     category: String,
     phone: Number,
-    website: String
+    website: String,
+    googleId: String
 })
 
 const Vendor = mongoose.model('Vendor', vendorSchema)

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -6,16 +7,30 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const passport = require('passport');
+const passportInit = require('./config/passport')
 const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler')
+const socketio = require('socket.io')
+
+// Routes 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const vendorsRouter = require('./routes/vendors');
-require('dotenv').config();
+const authRouter = require('./routes/auth')
 
+// Initiate our app
+const app = express();
+
+// Create server for socket.io
+const server = require('http').Server(app)
+
+
+
+//
 require('./config/passport')
 require('./db/db')
+
 
 // Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
@@ -23,13 +38,7 @@ mongoose.promise = global.Promise;
 // Configure isProduction constiable
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Initiate our app
-const app = express();
-
-
-
 // view engine setup
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -49,22 +58,27 @@ app.use(session({
   saveUninitialized: false
 }))
 app.use(passport.initialize());
+passportInit()
 
 const corsOptions = {
-  origin: 'http:/localhost:3000',
+  origin: 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions))
+
+const io = socketio(server)
+app.set('io', io)
+
 
 
 if(!isProduction) {
   app.use(errorHandler())
 }
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/vendors', vendorsRouter)
+app.use('/', authRouter);
+// app.use('/users', usersRouter);
+// app.use('/vendors', vendorsRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -81,5 +95,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+server.listen(3030)
 
 module.exports = app;
