@@ -28,7 +28,13 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.put('')
+router.put('/:id', async (req, res, next) => {
+  try {
+    
+  } catch (err) {
+    res.send(err)
+  }
+})
 
 
 

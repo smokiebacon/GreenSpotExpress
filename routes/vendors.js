@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router();
 var Vendor = require('../models/vendors')
 
-// VENDOR SHOW ROUTE
+// VENDOR SHOW ROUTE [LIST OF ALL VENDORS]
 router.get('/', async (req, res, next) => {
     try {
         const allVendors = await Vendor.find()
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
 })
 
 
-// SHOW VENDOR PAGE
+// SHOW VENDOR PAGE [INDIVIDUAL VENDOR]
 router.get('/:id', async (req, res, next) => {
     try {
         const foundVendor = await Vendor.findById(req.params.id)

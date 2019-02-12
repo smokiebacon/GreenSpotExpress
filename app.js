@@ -50,6 +50,14 @@ app.use(session({
 }))
 app.use(passport.initialize());
 
+const corsOptions = {
+  origin: 'http:/localhost:3000',
+  credentials: true,
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions))
+
+
 if(!isProduction) {
   app.use(errorHandler())
 }
