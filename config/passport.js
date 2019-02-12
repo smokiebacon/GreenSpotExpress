@@ -1,5 +1,6 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const User = require('../models/users')
 
 module.exports = () => {
    // Allowing passport to serialize and deserialize users into sessions
@@ -10,11 +11,25 @@ module.exports = () => {
  // information.  Normally, you would save the user to the database here
  // in a callback that was customized for each provider.
  const callback = (accessToken, refreshToken, profile, cb) => {
+    User.findOne({'googleId': profile.id}, (err, user) => {
+       if(err) cb(err)
+       if(user) {
+         return cb(null, user)
+       } else {
+          const newUser = new User({
+             username: profile.username,
+          })
+          newUser.save(err => {
+             if(err) return cb(err)
+             return cb(null, newUser)
+          })
+       }
+    }) 
     // You would see if the user is in the database and if he is return user
     // else create user and then return that
-
-    return cb(null, profile)
  }
+
+   
 
  // Adding each OAuth provider’s strategy to passport
 //  passport.use(new TwitterStrategy(TWITTER_CONFIG, callback))
