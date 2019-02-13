@@ -16,7 +16,6 @@ const socketio = require('socket.io')
 // Routes 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const vendorsRouter = require('./routes/vendors');
 const authRouter = require('./routes/auth')
 
 // Initiate our app
