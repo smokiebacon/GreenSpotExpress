@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/users');
 
-// USER SHOW ROUTE [LIST OF ALL Users]
+// Out Tonight ROUTE [LIST OF ALL Users Out Tonight]
 router.get('/', async (req, res, next) => {
   try {
-      const allUsers = await User.find()
-      console.log(allUsers)
+      const foundUsers = await User.find({outTonight: true})
+      console.log(foundUsers)
       res.json({
           status: 200,
-          data: allUsers
+          data: foundUsers
       })
   } catch (err){
       res.send(err)
