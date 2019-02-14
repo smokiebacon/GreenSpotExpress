@@ -7,6 +7,7 @@ const axios = require('axios')
 router.get('/', async (req, res, next) => {
   try {
       const foundUsers = await User.find({outTonight: true})
+      
       console.log(foundUsers)
       res.json({
           status: 200,
