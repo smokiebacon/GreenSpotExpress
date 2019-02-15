@@ -20,4 +20,4 @@ mongoose.connection.on('disconnected', () => {
     console.log('Mongoose is disconnected')
 })
 
-// mongoose.set('debug', true);
+mongoose.set('debug', true);

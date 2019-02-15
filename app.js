@@ -12,6 +12,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler')
 const socketio = require('socket.io')
+const server = require('./bin/www')
 
 // Routes 
 const indexRouter = require('./routes/index');
@@ -22,8 +23,7 @@ const authRouter = require('./routes/auth')
 const app = express();
 
 // Create server for socket.io
-const server = require('http').Server(app)
-
+// const server = require('http').Server(app)
 
 
 //
@@ -69,6 +69,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 const io = socketio(server)
+app.io = io
 app.set('io', io)
 
 
@@ -95,9 +96,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send(err);
 });
 
-server.listen(3030)
+
 
 module.exports = app;
