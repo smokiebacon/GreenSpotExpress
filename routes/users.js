@@ -7,7 +7,7 @@ const axios = require('axios')
 router.get('/', async (req, res, next) => {
   try {
       const foundUsers = await User.find({outTonight: true})
-      console.log(foundUsers)
+
       res.json({
           status: 200,
           data: foundUsers
@@ -21,7 +21,6 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const foundUser = await User.findById(req.params.id)
-    console.log(foundUser)
     res.json({
       status: 200,
       data: foundUser
@@ -34,7 +33,6 @@ router.get('/:id', async (req, res, next) => {
 // EDIT USER PAGE
 router.put('/:id', (req, res) => {
   // console.log(req.params)
-  console.log('this is the body', req.body)
   axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.location}&key=AIzaSyCzdgTlTndmIPFlvVcelpUoYWykNd7Qq4o`)
     .then(async response => {
       const longLat = response.data.results[0].geometry.location
